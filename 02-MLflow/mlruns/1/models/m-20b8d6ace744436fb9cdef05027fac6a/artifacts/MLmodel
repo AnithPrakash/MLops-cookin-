@@ -1,0 +1,32 @@
+artifact_path: /workspaces/MLops-cookin-/02-MLflow/mlruns/1/models/m-20b8d6ace744436fb9cdef05027fac6a/artifacts
+flavors:
+  python_function:
+    data: model.xgb
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.xgboost
+    python_version: 3.9.12
+  xgboost:
+    code: null
+    data: model.xgb
+    model_class: xgboost.core.Booster
+    model_format: xgb
+    xgb_version: 2.1.4
+is_signature_from_type_hint: false
+mlflow_version: 3.1.4
+model_id: m-20b8d6ace744436fb9cdef05027fac6a
+model_size_bytes: 3356810
+model_uuid: m-20b8d6ace744436fb9cdef05027fac6a
+prompts: null
+run_id: 3893fa07cac44aa9954ae11ca0b64190
+saved_input_example_info:
+  artifact_path: input_example.json
+  serving_input_path: serving_input_example.json
+  type: sparse_matrix_csr
+signature:
+  inputs: '[{"type": "tensor", "tensor-spec": {"dtype": "float64", "shape": [-1, 13267]}}]'
+  outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "float32", "shape": [-1]}}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2025-09-19 17:59:49.329130'

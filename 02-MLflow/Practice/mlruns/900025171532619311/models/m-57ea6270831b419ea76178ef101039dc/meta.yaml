@@ -1,0 +1,10 @@
+artifact_location: file:///workspaces/MLops-cookin-/02-MLflow/Practice/mlruns/900025171532619311/models/m-57ea6270831b419ea76178ef101039dc/artifacts
+creation_timestamp: 1758621044499
+experiment_id: '900025171532619311'
+last_updated_timestamp: 1758621052101
+model_id: m-57ea6270831b419ea76178ef101039dc
+model_type: null
+name: models
+source_run_id: 299e82c892e14cbe980d8b5f27079640
+status: 2
+status_message: null

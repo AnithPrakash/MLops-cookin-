@@ -1,0 +1,14 @@
+artifact_uri: file:///workspaces/MLops-cookin-/02-MLflow/Practice/mlruns/900025171532619311/299e82c892e14cbe980d8b5f27079640/artifacts
+end_time: 1758621052106
+entry_point_name: ''
+experiment_id: '900025171532619311'
+lifecycle_stage: active
+run_id: 299e82c892e14cbe980d8b5f27079640
+run_name: secretive-duck-776
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1758621044167
+status: 3
+tags: []
+user_id: codespace

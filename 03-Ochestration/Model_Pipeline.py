@@ -5,6 +5,7 @@ from sklearn.metrics import mean_squared_error
 import mlflow 
 import xgboost as xgb 
 
+import prefect import task, flow 
 from pathlib import Path
 
 
@@ -16,6 +17,7 @@ models_folder = Path('models')
 models_folder.mkdir(exist_ok=True)
 
 
+@task
 def read_dataframe(year, month):
     url = f'https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_{year}-{month:02d}.parquet'
     df = pd.read_parquet(url)
@@ -33,6 +35,7 @@ def read_dataframe(year, month):
     return df
 
 
+@task
 def create_X(df, dv=None):
     categorical = ['PU_DO']
     numerical = ['trip_distance']
@@ -47,7 +50,7 @@ def create_X(df, dv=None):
     return X, dv
 
 
-
+@task
 def train_model(X_train, y_train, X_val, y_val, dv):
     with mlflow.start_run() as run:
         train=xgb.DMatrix(X_train, label=y_train)
@@ -84,7 +87,7 @@ def train_model(X_train, y_train, X_val, y_val, dv):
 
 
 
-
+@flow
 def run(year, month):
     df_train=read_dataframe(year=year, month=month)
     next_year=year if month < 12 else year + 1

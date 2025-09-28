@@ -8,17 +8,19 @@ import xgboost as xgb
 from prefect import task, flow 
 from pathlib import Path
 
-
-mlflow.set_tracking_uri("http://127.0.0.1:5000")
+#mlflow settings
+mlflow.set_tracking_uri("sqlite:///mlflow.db")
 mlflow.set_experiment("nyc_taxi_experiment")
 
-
+#making dir
 models_folder = Path('models')
 models_folder.mkdir(exist_ok=True)
 
 
-@task
+@task(retries=3, retry_delay_seconds=2)
 def read_dataframe(year, month):
+    """ Reading the data from the parquet file and 
+        return the with a new col called PU_DO"""
     url = f'https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_{year}-{month:02d}.parquet'
     df = pd.read_parquet(url)
 
@@ -37,6 +39,7 @@ def read_dataframe(year, month):
 
 @task
 def create_X(df, dv=None):
+    """ Help to create the x train and y train """
     categorical = ['PU_DO']
     numerical = ['trip_distance']
     dicts = df[categorical + numerical].to_dict(orient='records')
@@ -50,7 +53,7 @@ def create_X(df, dv=None):
     return X, dv
 
 
-@task
+@task(log_prints=True)
 def train_model(X_train, y_train, X_val, y_val, dv):
     with mlflow.start_run() as run:
         train=xgb.DMatrix(X_train, label=y_train)
@@ -70,7 +73,7 @@ def train_model(X_train, y_train, X_val, y_val, dv):
         booster=xgb.train(
             params=best_params,
             dtrain=train,
-            num_boost_round=10,
+            num_boost_round=20,
             evals=[(valid, "validation")],
             early_stopping_rounds=50
         )
@@ -87,13 +90,15 @@ def train_model(X_train, y_train, X_val, y_val, dv):
 
 
 
-@flow
+@flow()
 def run(year, month):
+    #data collection
     df_train=read_dataframe(year=year, month=month)
     next_year=year if month < 12 else year + 1
     next_month = month + 1 if month < 12 else 1
     df_val=read_dataframe(year=next_year, month=next_month)
 
+    #make the x_train and Y_train
     X_train, dv= create_X(df_train)
     X_val, _=create_X(df_val, dv)
 
@@ -101,7 +106,10 @@ def run(year, month):
     y_train= df_train[target].values
     y_val=df_val[target].values
 
+    #train the model
     train_model(X_train, y_train, X_val, y_val, dv)
+
+    return None
 
 if __name__ == "__main__":
     import argparse

@@ -1,0 +1,23 @@
+artifact_path: /workspaces/MLops-cookin-/03-Ochestration/prefect/mlruns/1/models/m-f87d43d007dd4090a9994d4fe9e0f429/artifacts
+flavors:
+  python_function:
+    code: code
+    data: model.xgb
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.xgboost
+    python_version: 3.9.12
+  xgboost:
+    code: code
+    data: model.xgb
+    model_class: xgboost.core.Booster
+    model_format: xgb
+    xgb_version: 2.1.4
+mlflow_version: 3.1.4
+model_id: m-f87d43d007dd4090a9994d4fe9e0f429
+model_size_bytes: 4365046
+model_uuid: m-f87d43d007dd4090a9994d4fe9e0f429
+prompts: null
+run_id: a8eae618e39040189e0e95d41bfc1757
+utc_time_created: '2025-09-28 15:09:00.366879'

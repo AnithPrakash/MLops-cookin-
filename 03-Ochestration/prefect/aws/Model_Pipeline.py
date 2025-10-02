@@ -139,7 +139,7 @@ if __name__ == "__main__":
     parser.add_argument('--month', type=int, required=True, help='Month of the data to train on')
     args = parser.parse_args()
 
-    run_id = run(year=args.year, month=args.month)
+    run_id = run(year=2021, month=01 )
 
     with open("run_id.txt", "w") as f:
         f.write(run_id)

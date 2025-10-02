@@ -1,0 +1,23 @@
+artifact_path: /workspaces/MLops-cookin-/mlruns/1/models/m-d3dfa83c53f04a3f94a04d670498a3ec/artifacts
+flavors:
+  python_function:
+    code: code
+    data: model.xgb
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.xgboost
+    python_version: 3.9.12
+  xgboost:
+    code: code
+    data: model.xgb
+    model_class: xgboost.core.Booster
+    model_format: xgb
+    xgb_version: 2.1.4
+mlflow_version: 3.1.4
+model_id: m-d3dfa83c53f04a3f94a04d670498a3ec
+model_size_bytes: 4344910
+model_uuid: m-d3dfa83c53f04a3f94a04d670498a3ec
+prompts: null
+run_id: 9562d4bd47b9467f9858e67cca8a91e8
+utc_time_created: '2025-10-02 10:35:42.980314'

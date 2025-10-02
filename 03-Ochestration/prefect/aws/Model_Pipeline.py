@@ -9,7 +9,7 @@ from prefect import task, flow
 from pathlib import Path
 
 from prefect_aws import S3Bucket
-from prefect.artifacts import create_markdown_artifacts
+from prefect.artifacts import create_markdown_artifact
 from datetime import date
 
 #mlflow settings
@@ -105,13 +105,13 @@ def train_model(X_train, y_train, X_val, y_val, dv):
         | {date.today()} | {rmse:.2f}
         """
 
-        create_markdown_artifacts(
+        create_markdown_artifact(
             key="duration-model-report", markdown=markdown_rmse_report
         )
 
 
 @flow()
-def run(year, month):
+def run_s3(year, month):
     #data collection
     df_train=read_dataframe(year=year, month=month)
     next_year=year if month < 12 else year + 1
@@ -139,7 +139,8 @@ if __name__ == "__main__":
     parser.add_argument('--month', type=int, required=True, help='Month of the data to train on')
     args = parser.parse_args()
 
-    run_id = run(year=2021, month=01 )
+    run_id = run(year=args.year, month=args.month)
 
     with open("run_id.txt", "w") as f:
         f.write(run_id)
+ 

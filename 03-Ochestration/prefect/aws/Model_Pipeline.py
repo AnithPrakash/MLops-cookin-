@@ -8,6 +8,10 @@ import xgboost as xgb
 from prefect import task, flow 
 from pathlib import Path
 
+from prefect_aws import S3Bucket
+from prefect.artifacts import create_markdown_artifacts
+from datetime import date
+
 #mlflow settings
 mlflow.set_tracking_uri("sqlite:///mlflow.db")
 mlflow.set_experiment("nyc_taxi_experiment")
@@ -88,6 +92,22 @@ def train_model(X_train, y_train, X_val, y_val, dv):
         
         mlflow.xgboost.log_model(booster, name="model_mlflow", code_paths=["models"])
 
+        markdown_rmse_report=f"""# RMSE REPORT 
+
+        ## SUMMARY
+
+        Duration Prediction
+
+        ## RMSE XGBOOST MODEL
+
+        | Region     | RMSE |
+        |:-----------|------:|
+        | {date.today()} | {rmse:.2f}
+        """
+
+        create_markdown_artifacts(
+            key="duration-model-report", markdown=markdown_rmse_report
+        )
 
 
 @flow()

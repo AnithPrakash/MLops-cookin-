@@ -5,5 +5,5 @@ def create_aws_cred_blocks():
     my_aws_creds_obj = AwsCredentials(
         aws_access_key_id="1234",
         aws_secret_access_key="PLACEHOLDER",
-        
+        region_name="us-east-2"
     )

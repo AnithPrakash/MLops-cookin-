@@ -1,9 +1,25 @@
 import pickle
 
 from flask import Flask, request, jsonify
+import mlflow.sklearn
 
-with open('lin_reg.bin','rb') as f_in:
-    (dv, model)= pickle.load(f_in)
+#loading the model 
+run_id="6b670d2865fe4e42bd49e04afaa6c113"
+logged_model=f"runs:/{run_id}/model"
+
+#Load model as a PyFuncModel
+model=mlflow.pyfunc.load_model(logged_model)
+
+
+#loading the DictVectorizer
+dv_run_id="80d1a2a434b9493c84eff78c691f0700"
+
+path=mlflow.artifacts.download_artifacts(run_id=dv_run_id, artifact_path="dict_vectorizer.bin")
+print("downloading the dict vectorizer")
+with open(path, 'rb') as f_out:
+    dv=pickle.load(f_out)
+
+
 
 def prepare_features(ride):
     features={}

@@ -4,27 +4,18 @@ import mlflow
 from flask import Flask, request, jsonify
 import mlflow.sklearn
 
-#loading the model 
-run_id="6b670d2865fe4e42bd49e04afaa6c113"
-#logged_model=f"s3://s3-bucket-default-mlflow/2/{run_id}/artifacts/model"
-logged_model=f"runs:/{run_id}/model"
-mlflow.set_tracking_uri("http://127.0.0.1:5000")
+"""create a pipeline for the mlflow"""
 
-logged_model="runs:/6b670d2865fe4e42bd49e04afaa6c113/model"
-model=mlflow.pyfunc.load_model(logged_model)
+#loading the model 
+run_id="18a0d886c5c5494abae629e03532c2fb"
+#logged_model=f"runs:/{run_id}/model"
+#mlflow.set_tracking_uri("http://127.0.0.1:5000")
+
+#loading the model using model location 
+logged_model=f"s3://s3-bucket-default-mlflow/2/{run_id}/artifacts/model"
 
 #Load model as a PyFuncModel
-#model=mlflow.pyfunc.load_model(logged_model)
-
-
-#loading the DictVectorizer
-dv_run_id="80d1a2a434b9493c84eff78c691f0700"
-
-path=mlflow.artifacts.download_artifacts(run_id=dv_run_id, artifact_path="dict_vectorizer.bin")
-print("downloading the dict vectorizer")
-with open(path, 'rb') as f_out:
-    dv=pickle.load(f_out)
-
+model=mlflow.pyfunc.load_model(logged_model)
 
 
 def prepare_features(ride):
@@ -35,8 +26,7 @@ def prepare_features(ride):
 
 
 def predict(features):
-    X=dv.transform(features)
-    preds=model.predict(X)
+    preds=model.predict(features)
     return float(preds[0])
 
 app=Flask('Duration_prediction')

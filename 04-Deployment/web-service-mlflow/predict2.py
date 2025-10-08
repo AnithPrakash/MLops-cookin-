@@ -5,15 +5,15 @@ import os
 from flask import Flask, request, jsonify
 import mlflow.sklearn
 
-"""create a pipeline for the mlflow"""
+"""Running pipeline without the mlflow tracking server
+ NOT WORKING TRYING TO SOLVE THE ISSUE
+ """
 
 #loading the model 
 run_id=os.getenv('RUN_ID')
-logged_model=f"runs:/{run_id}/model"
-mlflow.set_tracking_uri("http://127.0.0.1:5000")
 
 #loading the model using model location 
-#logged_model=f"s3://s3-bucket-default-mlflow/2/{run_id}/artifacts/model"
+logged_model=f"s3://s3-bucket-default-mlflow/2/{run_id}/artifacts/model"
 
 #Load model as a PyFuncModel
 model=mlflow.pyfunc.load_model(logged_model)

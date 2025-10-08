@@ -6,6 +6,7 @@ import mlflow.sklearn
 #loading the model 
 run_id="6b670d2865fe4e42bd49e04afaa6c113"
 logged_model=f"runs:/{run_id}/model"
+mlflow.set_tracking_uri("http://127.0.0.1:5000")
 
 #Load model as a PyFuncModel
 model=mlflow.pyfunc.load_model(logged_model)

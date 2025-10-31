@@ -22,7 +22,7 @@ services:
     image: adminer
     restart: always
     ports:
-      - "0000:0000"
+      - "8080:8080"
     networks:
       - back-tier
       - front-tier
@@ -31,9 +31,9 @@ services:
     image: grafana/grafana
     user: "472"
     ports:
-      -"3000:3000"
+      - "3000:3000"
     volumes:
-      -./config/grafana_datasources.yaml:/etc/grafana/provisioning/datasource.yaml:ro
+      - ./config/grafana_datasources.yaml:/etc/grafana/provisioning/datasource.yaml:ro
     networks:
       - back-tier
       - front-tier

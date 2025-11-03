@@ -25,15 +25,15 @@ services:
       - "8080:8080"
     networks:
       - back-tier
-      - front-tier
-  
+      - front-tier  
+
   grafana:
-    image: grafana/grafana
+    image: grafana/grafana-enterprise
     user: "472"
     ports:
       - "3000:3000"
     volumes:
-      - ./config/grafana_datasources.yaml:/etc/grafana/provisioning/datasource.yaml:ro
+      - ./config/grafana_datasources.yaml:/etc/grafana/provisioning/datasources/datasource.yaml:ro
     networks:
       - back-tier
       - front-tier

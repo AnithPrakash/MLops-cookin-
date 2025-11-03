@@ -13,4 +13,5 @@ datasources:
     secureJsonData:
       password: 'example'
     jsonData:
-      sslmode: 'disable' 
+      sslmode: 'disable'
+      database: test

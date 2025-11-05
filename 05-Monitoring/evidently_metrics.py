@@ -10,6 +10,8 @@ import psycopg
 import joblib
 
 from prefect import task, flow 
+from prefect.tasks import task_input_hash
+from prefect.cache_policies import NO_CACHE
 
 from evidently.report import Report 
 from evidently import ColumnMapping
@@ -65,7 +67,7 @@ def pred_db():
             conn.execute(create_table_statement)
 
 
-@task 
+@task(cache_policy=NO_CACHE)
 def calculate_metrics_postgresql(curr, i):
     current_data=raw_data[(raw_data.lpep_pickup_datetime >= (begin + datetime.timedelta(i))) &
                           (raw_data.lpep_pickup_datetime < (begin + datetime.timedelta(i + 1)))]

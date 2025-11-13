@@ -5,11 +5,24 @@ import base64
 
 import mlflow
 
-#kinesis_client = boto3.client('kinesis')
+
+def get_model_location(run_id):
+    model_location=os.getenv("MODEL_LOCATION")
+    if model_location is not None:
+        return model_location
+
+    # model_bucket = os.getenv('MODEL_BUCKET', 'mlflow-models-alexey')
+    # experiment_id=os.getenv('MLFLOW_EXPERIMENT_ID', '1')
+
+    # model_location = f's3://{model_bucket}/{experiment_id}/{run_id}/artifacts/model'
+    # return model_location
+    local_model_path = "/workspaces/MLops-cookin-/06-Best_practices/integration-test/model"
+    print(f"⚙️ Using local model path: {local_model_path}")
+    return local_model_path
+
 
 def load_model(run_id):
-    logged_model = f's3://mlflow-models-alexey/1/{run_id}/artifacts/model'
-    # logged_model = f'runs:/{RUN_ID}/model'
+    logged_model=get_model_location(run_id)
     model = mlflow.pyfunc.load_model(logged_model)
     return model
 
@@ -93,7 +106,13 @@ class KinesisCallback():
             PartitionKey=str(ride_id)
         )
 
+def create_kinesis_client():
+    endpoint_url = os.getenv('KINESIS_ENDPOINT_URL')
 
+    if endpoint_url is None:
+        return boto3.client("kinesis")
+    
+    return boto3.client("kinesis", endpoint_url=endpoint_url)
 
 
 def init(prediction_stream_name : str, run_id : str, test_run: bool):
@@ -101,7 +120,7 @@ def init(prediction_stream_name : str, run_id : str, test_run: bool):
 
     callbacks=[]
     if not test_run:
-        kinesis_client=boto3.client("kinesis")
+        kinesis_client=create_kinesis_client()
         kinesis_callback = KinesisCallback(
             kinesis_client, 
             prediction_stream_name

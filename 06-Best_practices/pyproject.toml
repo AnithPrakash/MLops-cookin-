@@ -7,3 +7,14 @@ disable=[
 "missing-module-docstring"
 ]
 
+
+[tool.black]
+line-lenght = 80
+target-version = ['py312']
+skip-string-normalization= true 
+
+'''
+[tool.isort]
+multi_line_output = 3
+lenght_sort = true
+'''

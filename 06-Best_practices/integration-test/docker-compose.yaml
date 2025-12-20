@@ -17,5 +17,3 @@ services:
       - "4566:4566"
     environment:
       - services=kinesis
-
-

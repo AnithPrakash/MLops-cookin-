@@ -11,7 +11,7 @@ disable=[
 [tool.black]
 line-lenght = 80
 target-version = ['py312']
-skip-string-normalization= true 
+skip-string-normalization= true
 
 '''
 [tool.isort]

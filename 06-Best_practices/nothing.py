@@ -1,5 +1,5 @@
 '''isort .
-black . 
+black .
 pylint .
 pytest tests/
 '''
